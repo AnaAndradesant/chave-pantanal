@@ -1,5 +1,6 @@
 (function () {
-  const raiz = document.getElementById("chave");
+  const IMG = window.IMG_BASE || "imagens/";
+  const raiz = document.getElementById("chave-root");
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
 
   /* ---------- blocos ---------- */
@@ -124,7 +125,7 @@
 
   function figura(f, cls) {
     const fig = el("figure", "fig " + cls);
-    const img = el("img"); img.src = "imagens/" + f.src; img.alt = f.rotulo; img.loading = "lazy";
+    const img = el("img"); img.src = IMG + f.src; img.alt = f.rotulo; img.loading = "lazy";
     img.addEventListener("click", () => zoom(f));
     fig.append(img, el("figcaption", "", f.rotulo + ' <span class="lupa">⤢ ampliar</span>'));
     return fig;
@@ -134,8 +135,8 @@
     const wrap = el("figure", "fig");
     const box = el("div", "comparador");
     box.innerHTML = `
-      <div class="img-wrap depois"><img src="imagens/${d.src}" alt="${d.rotulo}"><span class="tag">${d.rotulo}</span></div>
-      <div class="img-wrap antes"><img src="imagens/${a.src}" alt="${a.rotulo}"><span class="tag">${a.rotulo}</span></div>
+      <div class="img-wrap depois"><img src="${IMG}${d.src}" alt="${d.rotulo}"><span class="tag">${d.rotulo}</span></div>
+      <div class="img-wrap antes"><img src="${IMG}${a.src}" alt="${a.rotulo}"><span class="tag">${a.rotulo}</span></div>
       <input class="slider" type="range" min="0" max="100" value="50" aria-label="Comparar ${a.rotulo} e ${d.rotulo}">
       <div class="divisor"><span>⇆</span></div>`;
     const s = box.querySelector(".slider"), antes = box.querySelector(".antes"), div = box.querySelector(".divisor");
@@ -148,7 +149,7 @@
   /* ---------- zoom ---------- */
   const lb = el("div", "lightbox"); lb.innerHTML = '<img alt=""><p></p>'; document.body.append(lb);
   lb.addEventListener("click", e => { e.stopPropagation(); lb.classList.remove("on"); });
-  function zoom(f) { lb.querySelector("img").src = "imagens/" + f.src; lb.querySelector("p").textContent = f.rotulo; lb.classList.add("on"); }
+  function zoom(f) { lb.querySelector("img").src = IMG + f.src; lb.querySelector("p").textContent = f.rotulo; lb.classList.add("on"); }
 
   document.addEventListener("click", limpar);
   document.addEventListener("keydown", e => { if (e.key === "Escape") { if (lb.classList.contains("on")) lb.classList.remove("on"); else limpar(); } });
